@@ -26,7 +26,7 @@ After upgrading, Helm commands should reference the full path to the updated Hel
 
 The client bundle must be configured to execute Helm commands successfully. Instructions for setting up the client bundle can be found in the official documentation.
 
-Note: The initial steps in this guide align closely with the non-HA installation documentation for MSR4, with additional instructions for enabling High Availability.
+> :memo: The initial steps in this guide align closely with the non-HA installation documentation for MSR4, with additional instructions for enabling High Availability.
 
 ## Step 1: Add the MSR Helm Repository
 
@@ -40,7 +40,7 @@ helm repo add harbor https://registry.mirantis.com/charts/harbor/helm
 helm show values harbor/harbor > values.yaml
 ```
 
-## Step Three: Create the K8s Secret with the Keys
+## Step 3: Create the K8s Secret with the Keys
 
 Create a folder called "certs"
 
@@ -87,7 +87,7 @@ kubectl create secret tls <name of your secret> \
 --key=certs/tls.key
 ```
 
-## Step 3: Set up NFS and storageclass
+## Step 4: Set up NFS and storageclass
 
 Set Data Persistence method to true in the values.yaml file:
 
@@ -149,7 +149,7 @@ kubectl get storageclass
 
 You should see the storageclass you created. Once the NFS pod is healthy you can move onto the next step.
 
-## Step 4: Set up HA Redis
+## Step 5: Set up HA Redis
 
 Add the bitnami repo
 
@@ -228,7 +228,7 @@ username: ""
 password: "<password>"
 ```
 
-## Step 5: Set up Postgresql
+## Step 6: Set up Postgresql
 
 Create and populate postgresql-values.yaml file
 
@@ -308,7 +308,7 @@ password: "<password>"
 coreDatabase: "harbor_core"
 ```
 
-## Step 6: Set up the Method of ingress by modifying the values.yaml file
+## Step 7: Set up the Method of ingress by modifying the values.yaml file
 
 Set the expose type:
 
@@ -355,30 +355,35 @@ Use a worker node ip address (the same one that you used in generating the cert)
 externalURL: <a worker node external IP:httpsnodePort>
 ```
 
-## Step 7: Modify the Yaml for replication
+## Step 8: Modify the Yaml for replication
 
 Set the replica number to at least 2 under portal, registry, core, trivy and jobservice in the values.yaml file
 
-## Step 8: Install via Helm
+## Step 9: Install via Helm
 
 ```
 helm install my-release harbor/harbor -f <pathto/values.yaml>
 ```
 
-## Step 9: Allow docker environment to trust Self Signed Cert
+## Step 10: Allow docker environment to trust Self Signed Cert
 
-Create directory
+Allow Docker to trust the self-signed certificate:
 
-```
-/etc/docker/certs.d/<ipaddress:nodeport>
-```
-
-Move and rename tls.crt
+Create the directory:
 
 ```
-mv tls.crt /etc/docker/certs.d/<ipaddress:nodeport>/ca.crt
+mkdir -p /etc/docker/certs.d/<worker-node-ip>:32770
 ```
+Move the certificate:
 
-The UI should be accessible at https://<worker-node-external-ip>:32770, provided the same NodePort numbers were used as specified in this guide. You should also be able to log in using Docker.
-Default Username: admin
-Default Password: Harbor12345
+```
+mv tls.crt /etc/docker/certs.d/<worker-node-ip>:32770/ca.crt
+```
+Access the Harbor UI at:
+
+```
+https://<worker-node-ip>:32770
+```
+Default login:
+Username: admin
+Password: Harbor12345

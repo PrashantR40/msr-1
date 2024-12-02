@@ -38,3 +38,27 @@ nav:
   - Home: index.md
   - Installation:
       - HA Install: ha.md
+
+
+extra:
+  k8s_version: !!python/object/apply:os.getenv ["KUBERNETES_VERSION"]
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/k0sproject/k0s
+      name: k0s on GitHub
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/k0sproject
+      name: k0s on X
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/k0sproject
+      name: k0s on Medium
+    - icon: fontawesome/brands/slack
+      link: https://kubernetes.slack.com/archives/C07VAPJUECS
+      name: k0s on the k8s slack
+    - icon: fontawesome/solid/link
+      link: https://k0sproject.io/
+      name: k0s Website
+  version:
+    provider: mike
+    default: stable
