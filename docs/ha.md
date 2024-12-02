@@ -379,11 +379,17 @@ Move the certificate:
 ```
 mv tls.crt /etc/docker/certs.d/<worker-node-ip>:32770/ca.crt
 ```
-Access the Harbor UI at:
+
+## Step 10: Access the Harbor UI
+
+Acccess the UI by pointing your browser to:
 
 ```
 https://<worker-node-ip>:32770
 ```
+
 Default login:
+
 Username: admin
+
 Password: Harbor12345
